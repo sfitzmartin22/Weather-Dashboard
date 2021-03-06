@@ -1,6 +1,6 @@
-cityname = "austin"
+cityname = "columbus"
 
-//set api's to vaariable to call them in order to get data //
+//set api's to variable to call them in order to get data //
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityname + "&units=imperial&appid=aecd33111ddcc6f97d93723ed12bb220";
 var apiUrlF = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityname + "&units=imperial&appid=aecd33111ddcc6f97d93723ed12bb220";
 
@@ -60,5 +60,49 @@ fetch(apiUrlF)
         return response.json();
     })
     .then(function(data){
-        console.log(data);
+        forecast = data.list;
+        console.log(forecast);
+    // empty forecast dic=v //
+        $("#forecast").empty();
+        // data yields in 3 hour periods so to get the 5 next days i have to skip 8 sections ahead each time //
+        for (var i = 0; i < forecast.length; i += 8) {
+            var date = forecast[i].dt_txt;
+            var temp = forecast[i].main.temp;
+            var hum = forecast[i].main.humidity;
+
+            var hDate = $("<h2 class='card-title'>").text(date);
+            var ptemp = $("<p class='card-text'>").text("Temperature: " + temp + " °F");
+            var phum = $("<p class='card-text'>").text("Humidity: " + hum + "%");
+            
+            var weather = forecast[i].weather[0].main
+            
+            if (weather === "Clear") {
+                var iconTwo = $("<img>").attr("src","http://openweathermap.org/img/wn/01d@2x.png");
+                iconTwo.attr("style", "height: 30px; width: 30px");
+            } else if (weather === "Clouds") {
+                var iconTwo = $("<img>").attr("src","http://openweathermap.org/img/wn/04d@2x.png");
+                iconTwo.attr("style", "height: 30px; width: 30px");
+            } else if (weather === "Rain") {
+                var iconTwo = $("<img>").attr("src","http://openweathermap.org/img/wn/10d@2x.png");
+                iconTwo.attr("style", "height: 30px; width: 30px");
+            } else if (weather === "Thunderstorm") {
+                var iconTwo = $("<img>").attr("src","http://openweathermap.org/img/wn/11d@2x.png");
+                iconTwo.attr("style", "height: 30px; width: 30px");
+            } else if (weather === "Snow") {
+                var iconTwo = $("<img>").attr("src","http://openweathermap.org/img/wn/13d@2x.png");
+                iconTwo.attr("style", "height: 30px; width: 30px");
+            } else if (weather === "Mist") {
+                var iconTwo = $("<img>").attr("src","http://openweathermap.org/img/wn/50d@2x.png");
+                iconTwo.attr("style", "height: 30px; width: 30px");
+            }
+
+            forecast5 = $("#forecast");
+            forecast5.append(hDate);
+            forecast5.append(iconTwo);
+            forecast5.append(ptemp);
+            forecast5.append(phum);
+
+    }
+
+
     });
