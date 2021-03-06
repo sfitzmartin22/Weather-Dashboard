@@ -1,4 +1,4 @@
-cityname = "columbus"
+cityname = "Dallas"
 
 //set api's to variable to call them in order to get data //
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityname + "&units=imperial&appid=aecd33111ddcc6f97d93723ed12bb220";
@@ -70,7 +70,7 @@ fetch(apiUrlF)
             var temp = forecast[i].main.temp;
             var hum = forecast[i].main.humidity;
 
-            var hDate = $("<h2 class='card-title'>").text(date);
+            var hDate = $("<h2 class='card-title'>").text(date.substr(0,10));
             var ptemp = $("<p class='card-text'>").text("Temperature: " + temp + " °F");
             var phum = $("<p class='card-text'>").text("Humidity: " + hum + "%");
             
@@ -96,13 +96,17 @@ fetch(apiUrlF)
                 iconTwo.attr("style", "height: 30px; width: 30px");
             }
 
-            forecast5 = $("#forecast");
+            var forecast5 = $("<div class='card text-white shadow-lg bg-primary mb-8 pd-2 style='width: 8rem; height: 11rem'>");
             forecast5.append(hDate);
             forecast5.append(iconTwo);
             forecast5.append(ptemp);
             forecast5.append(phum);
+            $("#forecast").append(forecast5);
 
     }
 
 
     });
+
+
+    
