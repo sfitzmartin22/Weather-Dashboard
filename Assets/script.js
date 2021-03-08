@@ -1,5 +1,7 @@
-cityname = "Dallas"
-
+$(document).ready (function() {
+console.log("ready");
+});
+function searchCity(cityname) {
 //set api's to variable to call them in order to get data //
 var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityname + "&units=imperial&appid=aecd33111ddcc6f97d93723ed12bb220";
 var apiUrlF = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityname + "&units=imperial&appid=aecd33111ddcc6f97d93723ed12bb220";
@@ -52,7 +54,8 @@ divFormat.append(cityNameEl, Icon, tempEl, humEl, windEl);
 
 // posting info on html from the div i created //
 $("#city-name").html(divFormat);
-});
+
+    });
 
 // getting and parsing api for the five day forecast //
 fetch(apiUrlF) 
@@ -108,5 +111,38 @@ fetch(apiUrlF)
 
     });
 
-
+}
+    pageLoad();
+    //----------------------------------------Event handler for user city search-----------------------//
     
+    $("#select-city").on("click", function (event) {
+        // Preventing the button from trying to submit the form......
+        event.preventDefault();
+        // Storing the city name........
+        var cityInput = $("#city-input").val().trim();
+    
+        //save search term to local storage.....
+        var textContent = $(this).siblings("input").val();
+        var storearr = [];
+        storearr.push(textContent);
+        localStorage.setItem('cityName', JSON.stringify({storearr}));
+      
+        searchCity(cityInput);
+        pageLoad();
+    });
+    
+    //---------------------------Call stored items on page load-------------------------------------//
+    function pageLoad () {
+        var lastSearch = JSON.parse(localStorage.getItem("cityName"));
+        var searchDiv = $("<button class='btn border text-muted mt-1 shadow-sm bg-white rounded' style='width: 12rem;'>").text(lastSearch);
+        var psearch = $("<div>");
+        psearch.append(searchDiv)
+        $("#searchhistory").prepend(psearch);
+    }
+    
+    //Event deligation...
+    $("#searchhistory").on('click', '.btn', function(event) {
+    event.preventDefault();
+        console.log($(this).text());
+        searchCity($(this).text());
+    });
