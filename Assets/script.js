@@ -125,7 +125,7 @@ fetch(apiUrlF)
         var textContent = $(this).siblings("input").val();
         var storearr = [];
         storearr.push(textContent);
-        localStorage.setItem('cityName', JSON.stringify({storearr}));
+        localStorage.setItem('cityName', JSON.stringify(storearr));
       
         searchCity(cityInput);
         pageLoad();
